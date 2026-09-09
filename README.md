@@ -26,3 +26,14 @@ In `data.js`, the data is stored in a single global variable `window.CHECKLIST_D
     - `id` item id (checked state is stored by it; changing it loses the check, so keep it stable)
     - `text` item name
     - `tag` priority color, one of `red` / `orange` / `yellow` / `green`
+
+# How to instruct your AI to modify the data
+
+``` Prompt
+Modify window.CHECKLIST_DATA in data.js as follows:
+Add a category: {{YOUR CATEGORY NAME}} containing items: {{ITEMS}}.
+tag colors: only red / orange / yellow / green - pick the most fitting one for each item.
+ids: number new items with the category prefix. Never touch existing item ids - changing them will lose their checked state.
+Edit data.js only; leave other files alone.
+When done, list the items you added and the color you gave each.
+```

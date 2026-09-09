@@ -180,6 +180,7 @@
     background: var(--surface-2);
   }
   .cat-head .count.done { color: var(--green); }
+  .cat-head .count.all { color: var(--green); font-weight: 700; }
   .cat-head .chev {
     color: var(--text-2);
     transform: rotate(0deg);
@@ -377,6 +378,7 @@
       const done = countDone(cat);
       countEl.textContent = done + " / " + cat.items.length;
       countEl.classList.toggle("done", done > 0);
+      countEl.classList.toggle("all", done === cat.items.length);
     };
 
     head.addEventListener("click", () => {
@@ -399,6 +401,8 @@
     sec.appendChild(body);
     sec._items = items;
     sec._updateCount = updateCount;
+    /* 是否“所有选项都已勾选”（用于自动折叠；空分类不折叠） */
+    sec._allFilled = () => cat.items.length > 0 && cat.items.every((it) => checked.has(it.id));
     updateCount();
     return sec;
   }
@@ -425,8 +429,16 @@
       if (cb.checked) { checked.add(it.id); row.classList.add("checked"); }
       else { checked.delete(it.id); row.classList.remove("checked"); }
       save(KEY_CHECKED, [...checked]);
-      reorder(secOf(row));
-      catUIOf(row);
+      const s = secOf(row);
+      reorder(s);
+      catUIOf(s);
+      /* 优化：该分类所有选项都被勾选 → 自动折叠（写入 localStorage，刷新保持折叠）。
+         取消勾选时分类必处于展开状态，故无需“自动展开”，不会出现折叠时看不到复选框的死角。 */
+      if (s && s._allFilled && s._allFilled() && !s.classList.contains("collapsed")) {
+        s.classList.add("collapsed");
+        collapsed[s.dataset.cat] = true;
+        save(KEY_COLLAPSED, collapsed);
+      }
     });
 
     return row;
