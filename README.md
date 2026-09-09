@@ -18,6 +18,8 @@ Try it out: [https://geraniol.github.io/Itemlist/](https://geraniol.github.io/It
 In `data.js`, the data is stored in a single global variable `window.CHECKLIST_DATA`:
 
 - `v` version number, just for reference, not enforced.
+- `title` page title; it fills both the browser tab `<title>` and the page top heading.
+- `tags` object mapping a priority color (key, one of `red` / `orange` / `yellow` / `green`) to its legend label.
 - `categories` array, each:
   - `id` category id (collapse state is stored by it)
   - `name` display name
@@ -31,6 +33,8 @@ In `data.js`, the data is stored in a single global variable `window.CHECKLIST_D
 
 ``` Prompt
 Modify window.CHECKLIST_DATA in data.js as follows:
+(Optional) Set the page title, window.CHECKLIST_DATA.title, to: {{PAGE TITLE}}.
+(Optional) Set the legend labels, window.CHECKLIST_DATA.tags, to: red={{RED LABEL}}, orange={{ORANGE LABEL}}, yellow={{YELLOW LABEL}}, green={{GREEN LABEL}}.
 Add a category: {{YOUR CATEGORY NAME}} containing items: {{ITEMS}}.
 tag colors: only red / orange / yellow / green - pick the most fitting one for each item.
 ids: number new items with the category prefix. Never touch existing item ids - changing them will lose their checked state.

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>大学开学物品清单</title>
+<title></title>
 <style>
   :root {
     --bg: #f4f5f7;
@@ -253,14 +253,9 @@
   <div class="wrap">
     <header class="top">
       <div class="title">
-        <h1>大学开学物品清单<span class="ver" id="ver"></span></h1>
+        <h1><span id="appTitle"></span><span class="ver" id="ver"></span></h1>
       </div>
-      <div class="legend">
-        <span class="leg"><i style="--c:var(--red)"></i>提前准备</span>
-        <span class="leg"><i style="--c:var(--orange)"></i>开学准备</span>
-        <span class="leg"><i style="--c:var(--yellow)"></i>最好准备</span>
-        <span class="leg"><i style="--c:var(--green)"></i>看情况</span>
-      </div>
+      <div class="legend" id="legend"></div>
       <div class="actions">
         <button class="icon-btn reset-btn" id="resetBtn" title="清空本地记录" aria-label="清空本地记录">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/></svg>
@@ -281,6 +276,13 @@
   "use strict";
 
   const DATA = window.CHECKLIST_DATA || { categories: [] };
+
+  /* 页面标题：来自 data.js 的 title 字段，同步用于浏览器标签 <title> 与顶部 h1（改 data.js 即可重命名整个页面） */
+  const pageTitle = DATA.title || "大学开学物品清单";
+  document.title = pageTitle;
+  const titleEl = document.getElementById("appTitle");
+  if (titleEl) titleEl.textContent = pageTitle;
+
   const COLORS = { red: "var(--red)", orange: "var(--orange)", yellow: "var(--yellow)", green: "var(--green)" };
 
   /* Lucide 图标内联路径（stroke 风格，viewBox 0 0 24 24） */
@@ -304,6 +306,25 @@
   const listEl = document.getElementById("list");
   const themeBtn = document.getElementById("themeBtn");
   const root = document.documentElement;
+  const legendEl = document.getElementById("legend");
+
+  /* 图例：由 data.js 的 tags 字段（颜色 → 名称）动态生成，改 data.js 即可重命名/增减彩色图例 */
+  function buildLegend() {
+    if (!legendEl) return;
+    legendEl.innerHTML = "";
+    const tags = DATA.tags;
+    if (!tags) return;
+    Object.keys(tags).forEach((key) => {
+      const span = document.createElement("span");
+      span.className = "leg";
+      const dot = document.createElement("i");
+      dot.style.setProperty("--c", COLORS[key] || COLORS.red);
+      span.appendChild(dot);
+      span.appendChild(document.createTextNode(tags[key]));
+      legendEl.appendChild(span);
+    });
+  }
+  buildLegend();
 
   /* ---------- 存储 ---------- */
   const KEY_CHECKED = "uni-checklist:checked";
