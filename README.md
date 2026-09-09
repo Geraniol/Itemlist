@@ -29,7 +29,7 @@ In `data.js`, the data is stored in a single global variable `window.CHECKLIST_D
     - `text` item name
     - `tag` priority color, one of `red` / `orange` / `yellow` / `green`
 
-# How to instruct your AI to modify the data
+## How to instruct your AI to modify the data
 
 ``` Prompt
 Modify window.CHECKLIST_DATA in data.js as follows:
