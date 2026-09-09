@@ -2,6 +2,8 @@
 
 A single-page interactive checklist with collapsible categories, check-off progress, day/night mode, and a per-item priority color.
 
+This is a purely static HTML/JS/CSS project. It can be hosted on GitHub Pages.
+
 Try it out: [https://geraniol.github.io/Itemlist/](https://geraniol.github.io/Itemlist/)
 
 ## How it works
